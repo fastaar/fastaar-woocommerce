@@ -1,0 +1,4 @@
+# Export ignores — excluded from git archive / release zips
+.gitattributes  export-ignore
+.gitignore      export-ignore
+.github/        export-ignore
