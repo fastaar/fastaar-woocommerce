@@ -57,6 +57,7 @@ class WC_Gateway_Fastaar extends WC_Payment_Gateway {
         $this->has_fields         = false;
         $this->method_title       = __( 'Fastaar', 'fastaar-pay' );
         $this->method_description = __( 'Accept bKash, Nagad, Rocket, and Upay payments via Fastaar.', 'fastaar-pay' );
+        $this->supports           = array( 'products', 'refunds' );
 
         // Load settings
         $this->init_form_fields();
@@ -321,5 +322,45 @@ class WC_Gateway_Fastaar extends WC_Payment_Gateway {
 
         $this->log( 'Webhook event ignored: ' . $event );
         wp_send_json_success( 'Event received but no action taken' );
+    }
+
+    /**
+     * Process a refund for a completed order.
+     *
+     * @param int        $order_id Order ID.
+     * @param float|null $amount   Refund amount (ignored — Fastaar refunds the full payment).
+     * @param string     $reason   Refund reason (informational only).
+     * @return bool|WP_Error
+     */
+    public function process_refund( $order_id, $amount = null, $reason = '' ) {
+        $order      = wc_get_order( $order_id );
+        $payment_id = $order ? $order->get_meta( '_fastaar_payment_id' ) : '';
+
+        if ( empty( $payment_id ) ) {
+            return new WP_Error( 'fastaar_refund_error', __( 'Fastaar payment ID not found for this order.', 'fastaar-pay' ) );
+        }
+
+        $client = new Fastaar_API_Client( $this->api_key );
+
+        try {
+            $client->refund_payment( $payment_id );
+
+            $order->add_order_note(
+                sprintf(
+                    /* translators: 1: Fastaar payment ID, 2: refund reason */
+                    __( 'Fastaar refund submitted. Payment ID: %1$s. Reason: %2$s', 'fastaar-pay' ),
+                    $payment_id,
+                    $reason ?: __( 'No reason provided', 'fastaar-pay' )
+                )
+            );
+
+            $this->log( 'Refund processed for Order ID: ' . $order_id . ', Payment ID: ' . $payment_id );
+
+            return true;
+
+        } catch ( Exception $e ) {
+            $this->log( 'Refund failed for Order ID: ' . $order_id . ': ' . $e->getMessage(), 'error' );
+            return new WP_Error( 'fastaar_refund_error', $e->getMessage() );
+        }
     }
 }

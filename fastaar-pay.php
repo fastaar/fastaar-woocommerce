@@ -3,7 +3,7 @@
  * Plugin Name: Fastaar Payment Gateway for WooCommerce
  * Plugin URI: https://fastaar.com
  * Description: Accept bKash, Nagad, Rocket, and Upay payments on your WooCommerce store using Fastaar.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Fastaar
  * Author URI: https://fastaar.com
  * License: MIT

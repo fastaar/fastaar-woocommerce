@@ -4,7 +4,7 @@ Donate link: https://fastaar.com
 Tags: fastaar, payment gateway, bkash, nagad, rocket, upay, bangladesh, woocommerce
 Requires at least: 6.0
 Tested up to: 6.5
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 Requires PHP: 8.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
@@ -17,6 +17,7 @@ Fastaar Payment Gateway for WooCommerce allows you to easily accept bKash, Nagad
 
 ### Key Features
 * **Seamless Checkout:** Redirect customers to the secure Fastaar checkout page to pay via bKash, Nagad, Rocket, or Upay.
+* **Refunds:** Issue refunds directly from the WooCommerce order admin — no need to log in to the Fastaar dashboard.
 * **Cryptographic Verification:** Every webhook request is verified using SHA-256 HMAC signature validation to prevent tampering and spoofing.
 * **Idempotency Support:** Automatic safety checks prevent double processing of identical webhooks.
 * **Detailed Logs:** Enable debug logging to track and trace API calls and incoming webhook payloads.
@@ -51,10 +52,17 @@ Yes, you can input a test API key (e.g., prefix `fk_test_`) and enable Sandbox M
 
 == Changelog ==
 
+= 1.1.0 =
+* Added refund support — issue refunds from the WooCommerce order admin via `POST /api/v1/payments/{id}/refund`.
+* Updated error parsing to match the new API error format (`message` + `code` fields instead of the nested `error` object).
+
 = 1.0.0 =
 * Initial release of the Fastaar Payment Gateway for WooCommerce.
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+* Adds refund support and updates error handling for the new API response format. Upgrade recommended.
 
 = 1.0.0 =
 * Initial release of Fastaar Payment Gateway for WooCommerce.

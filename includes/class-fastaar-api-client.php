@@ -110,6 +110,17 @@ class Fastaar_API_Client {
     }
 
     /**
+     * Refund a completed payment.
+     *
+     * @param string $payment_id Fastaar payment ID.
+     * @return array The updated payment object with status `refunded`.
+     * @throws Fastaar_API_Exception
+     */
+    public function refund_payment( $payment_id ) {
+        return $this->request( 'POST', '/api/v1/payments/' . rawurlencode( $payment_id ) . '/refund' );
+    }
+
+    /**
      * Execute HTTP request.
      *
      * @param string     $method HTTP method.
@@ -157,8 +168,8 @@ class Fastaar_API_Client {
         $decoded      = json_decode( $body_content, true );
 
         if ( $status_code >= 400 || ! is_array( $decoded ) ) {
-            $message    = isset( $decoded['error']['message'] ) ? $decoded['error']['message'] : sprintf( __( 'Fastaar API returned HTTP %d.', 'fastaar-pay' ), $status_code );
-            $error_type = isset( $decoded['error']['type'] ) ? $decoded['error']['type'] : 'api_error';
+            $message    = isset( $decoded['message'] ) ? $decoded['message'] : sprintf( __( 'Fastaar API returned HTTP %d.', 'fastaar-pay' ), $status_code );
+            $error_type = isset( $decoded['code'] ) ? $decoded['code'] : 'api_error';
             throw new Fastaar_API_Exception( $message, $error_type, $status_code );
         }
 
