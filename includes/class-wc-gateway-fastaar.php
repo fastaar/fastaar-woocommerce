@@ -193,7 +193,7 @@ class WC_Gateway_Fastaar extends WC_Payment_Gateway {
 
         $params = array(
             'amount'      => $order->get_total(),
-            'invoice_id'  => (string) $order->get_id(),
+            'invoice_number'  => (string) $order->get_id(),
             'success_url' => $this->get_return_url( $order ),
             'cancel_url'  => esc_url_raw( $order->get_cancel_order_url() ),
             'metadata'    => array(
@@ -282,14 +282,14 @@ class WC_Gateway_Fastaar extends WC_Payment_Gateway {
         $this->log( 'Webhook event: ' . $event );
 
         if ( 'payment.completed' === $event ) {
-            $order_id   = isset( $data['invoice_id'] ) ? $data['invoice_id'] : '';
+            $order_id   = isset( $data['invoice_number'] ) ? $data['invoice_number'] : '';
             $payment_id = isset( $data['id'] ) ? $data['id'] : '';
 
             $this->log( 'Processing payment.completed event. Order ID: ' . $order_id . ', Payment ID: ' . $payment_id );
 
             if ( empty( $order_id ) ) {
-                $this->log( 'Webhook error: invoice_id is missing in event payload data.', 'error' );
-                wp_send_json_error( 'Missing invoice_id', 400 );
+                $this->log( 'Webhook error: invoice_number is missing in event payload data.', 'error' );
+                wp_send_json_error( 'Missing invoice_number', 400 );
             }
 
             $order = wc_get_order( $order_id );
