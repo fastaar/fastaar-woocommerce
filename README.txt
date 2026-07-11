@@ -29,7 +29,7 @@ Fastaar Payment Gateway for WooCommerce allows you to easily accept bKash, Nagad
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 3. Navigate to **WooCommerce > Settings > Payments**.
 4. Click on **Fastaar** to configure your gateway options:
-   * **API Key:** Retrieve your live or test key from your Fastaar merchant dashboard.
+   * **API Key:** Retrieve your live or test key from your Fastaar merchant dashboard. The key must include the `payments:write` ability (and `payments:refund` if you plan to issue refunds from WooCommerce).
    * **Webhook Secret:** Set the signing secret for webhook verification.
 5. In your Fastaar merchant dashboard, configure your Webhook URL to: `https://yourdomain.com/?wc-api=wc_gateway_fastaar`
 
@@ -44,6 +44,10 @@ Use the following format, replacing `yourdomain.com` with your website's URL:
 
 = Can I test payments before going live? =
 Yes, you can input a test API key (e.g., prefix `fk_test_`) and enable Sandbox Mode in settings to run tests.
+
+= I'm getting an "ability_denied" or "authentication_error" response =
+Your API key is missing a required ability, or has expired. Open the key in your Fastaar merchant dashboard
+under API Keys and confirm it has `payments:write` (and `payments:refund` for refunds) and no expiry date in the past.
 
 == Screenshots ==
 
