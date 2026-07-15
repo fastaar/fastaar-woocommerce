@@ -7,7 +7,7 @@ Tested up to: 7.0
 Requires PHP: 8.1
 WC requires at least: 7.0
 WC tested up to: 10.9
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -74,6 +74,9 @@ Make sure you clicked Save on WooCommerce > Settings > Payments after enabling i
 
 == Changelog ==
 
+= 1.2.2 =
+* Fixed the Plugin URI and Author URI being identical in the plugin header (a WordPress.org plugin check requirement) — Plugin URI now points to the plugin's GitHub repository, Author URI to fastaar.com.
+
 = 1.2.1 =
 * Renamed the plugin folder from `fastaar-woocommerce` to `fastaar-pay` to match the plugin's text domain and WordPress.org slug.
 * Simplified the API Key setting to a single field (used as either the Live or Test key depending on the Test Mode toggle) instead of separate Live/Test API Key fields.
@@ -100,6 +103,9 @@ Make sure you clicked Save on WooCommerce > Settings > Payments after enabling i
 * Initial release of the Fastaar Payment Gateway for WooCommerce.
 
 == Upgrade Notice ==
+
+= 1.2.2 =
+* Fixes a plugin header validation error (duplicate Plugin/Author URI). No functional changes.
 
 = 1.2.1 =
 * Renames the plugin folder to `fastaar-pay` and simplifies the API Key setting to one field. If you installed via a zip, re-upload; if updating in place, verify the Fastaar gateway is still enabled under WooCommerce > Settings > Payments afterward.
