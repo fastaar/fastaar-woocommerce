@@ -110,14 +110,31 @@ class Fastaar_API_Client {
     }
 
     /**
-     * Refund a completed payment.
+     * Refund a payment, in full or in part. Only payments with status `completed` or
+     * `partially_refunded` can be refunded. Pass an amount to refund only part of the
+     * remaining balance; omit it to refund whatever is still refundable.
      *
-     * @param string $payment_id Fastaar payment ID.
-     * @return array The updated payment object with status `refunded`.
+     * @param string     $payment_id Fastaar payment ID.
+     * @param float|null $amount     Amount to refund, or null for the full remaining balance.
+     * @return array The updated payment object. `status` is `refunded` once fully refunded,
+     *               or `partially_refunded` if some balance remains.
      * @throws Fastaar_API_Exception
      */
-    public function refund_payment( $payment_id ) {
-        return $this->request( 'POST', '/api/v1/payments/' . rawurlencode( $payment_id ) . '/refund' );
+    public function refund_payment( $payment_id, $amount = null ) {
+        $body = null !== $amount ? array( 'amount' => $amount ) : null;
+        return $this->request( 'POST', '/api/v1/payments/' . rawurlencode( $payment_id ) . '/refund', $body );
+    }
+
+    /**
+     * List a payment's refund history, newest first — one entry per refund call, even
+     * across several partial refunds.
+     *
+     * @param string $payment_id Fastaar payment ID.
+     * @return array List of refund objects.
+     * @throws Fastaar_API_Exception
+     */
+    public function list_refunds( $payment_id ) {
+        return $this->request( 'GET', '/api/v1/payments/' . rawurlencode( $payment_id ) . '/refunds' );
     }
 
     /**
@@ -154,10 +171,12 @@ class Fastaar_API_Client {
 
         if ( is_wp_error( $response ) ) {
             throw new Fastaar_API_Exception(
-                sprintf(
-                    /* translators: %s: error message */
-                    __( 'Could not reach the Fastaar API: %s', 'fastaar-pay' ),
-                    $response->get_error_message()
+                esc_html(
+                    sprintf(
+                        /* translators: %s: error message */
+                        __( 'Could not reach the Fastaar API: %s', 'fastaar-pay' ),
+                        $response->get_error_message()
+                    )
                 ),
                 'connection_error'
             );
@@ -168,9 +187,13 @@ class Fastaar_API_Client {
         $decoded      = json_decode( $body_content, true );
 
         if ( $status_code >= 400 || ! is_array( $decoded ) ) {
-            $message    = isset( $decoded['message'] ) ? $decoded['message'] : sprintf( __( 'Fastaar API returned HTTP %d.', 'fastaar-pay' ), $status_code );
+            $message    = isset( $decoded['message'] ) ? $decoded['message'] : sprintf(
+                /* translators: %d: HTTP status code */
+                __( 'Fastaar API returned HTTP %d.', 'fastaar-pay' ),
+                $status_code
+            );
             $error_type = isset( $decoded['code'] ) ? $decoded['code'] : 'api_error';
-            throw new Fastaar_API_Exception( $message, $error_type, $status_code );
+            throw new Fastaar_API_Exception( esc_html( $message ), esc_html( $error_type ), (int) esc_html( (string) $status_code ) );
         }
 
         return isset( $decoded['data'] ) ? $decoded['data'] : $decoded;

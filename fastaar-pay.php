@@ -3,17 +3,23 @@
  * Plugin Name: Fastaar Payment Gateway for WooCommerce
  * Plugin URI: https://fastaar.com
  * Description: Accept bKash, Nagad, Rocket, and Upay payments on your WooCommerce store using Fastaar.
- * Version: 1.1.0
+ * Version: 1.2.0
  * Author: Fastaar
  * Author URI: https://fastaar.com
  * License: MIT
+ * License URI: https://opensource.org/licenses/MIT
  * Text Domain: fastaar-pay
  * Requires PHP: 8.1
  * Requires at least: 6.0
+ * Tested up to: 7.0
  * WC requires at least: 7.0
+ * WC tested up to: 10.9
  */
 
 defined( 'ABSPATH' ) || exit;
+
+define( 'FASTAAR_PAY_PLUGIN_FILE', __FILE__ );
+define( 'FASTAAR_PAY_VERSION', '1.2.0' );
 
 /**
  * Initialize Fastaar WooCommerce Payment Gateway.
@@ -44,6 +50,39 @@ function woocommerce_fastaar_add_gateway( $gateways ) {
     $gateways[] = 'WC_Gateway_Fastaar';
     return $gateways;
 }
+
+/**
+ * Declare compatibility with WooCommerce features this plugin already supports.
+ * Cart & Checkout blocks compatibility is what actually enables the gateway to
+ * register itself on the block-based checkout (see woocommerce_fastaar_register_blocks_support()).
+ */
+add_action(
+    'before_woocommerce_init',
+    function () {
+        if ( ! class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+            return;
+        }
+
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+    }
+);
+
+/**
+ * Register the Fastaar gateway with the block-based Cart & Checkout.
+ */
+add_action(
+    'woocommerce_blocks_payment_method_type_registration',
+    function ( \Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry ) {
+        if ( ! class_exists( \Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType::class ) ) {
+            return;
+        }
+
+        require_once plugin_dir_path( __FILE__ ) . 'includes/class-fastaar-blocks-support.php';
+
+        $payment_method_registry->register( new Fastaar_Blocks_Support() );
+    }
+);
 
 /**
  * Display admin notice if WooCommerce is missing.

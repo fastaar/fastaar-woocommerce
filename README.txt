@@ -1,11 +1,13 @@
 === Fastaar Payment Gateway for WooCommerce ===
-Contributors: fastaar
+Contributors: fastaar, amdad121
 Donate link: https://fastaar.com
-Tags: fastaar, payment gateway, bkash, nagad, rocket, upay, bangladesh, woocommerce
+Tags: fastaar, payment gateway, bkash, nagad, bangladesh
 Requires at least: 6.0
-Tested up to: 6.5
-Stable tag: 1.1.0
+Tested up to: 7.0
 Requires PHP: 8.1
+WC requires at least: 7.0
+WC tested up to: 10.9
+Stable tag: 1.2.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -17,7 +19,8 @@ Fastaar Payment Gateway for WooCommerce allows you to easily accept bKash, Nagad
 
 ### Key Features
 * **Seamless Checkout:** Redirect customers to the secure Fastaar checkout page to pay via bKash, Nagad, Rocket, or Upay.
-* **Refunds:** Issue refunds directly from the WooCommerce order admin — no need to log in to the Fastaar dashboard.
+* **Block Checkout Compatible:** Works on both the classic shortcode checkout and the WooCommerce Cart & Checkout blocks.
+* **Full & Partial Refunds:** Issue full or partial refunds directly from the WooCommerce order admin — no need to log in to the Fastaar dashboard. Partially refunded orders stay refundable for the remaining balance.
 * **Cryptographic Verification:** Every webhook request is verified using SHA-256 HMAC signature validation to prevent tampering and spoofing.
 * **Idempotency Support:** Automatic safety checks prevent double processing of identical webhooks.
 * **Detailed Logs:** Enable debug logging to track and trace API calls and incoming webhook payloads.
@@ -25,29 +28,42 @@ Fastaar Payment Gateway for WooCommerce allows you to easily accept bKash, Nagad
 
 == Installation ==
 
-1. Upload the entire `fastaar-woocommerce` folder to the `/wp-content/plugins/` directory, or install it directly via the WordPress admin panel.
+1. Upload the entire `fastaar-pay` folder to the `/wp-content/plugins/` directory, or install it directly via the WordPress admin panel.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 3. Navigate to **WooCommerce > Settings > Payments**.
 4. Click on **Fastaar** to configure your gateway options:
-   * **API Key:** Retrieve your live or test key from your Fastaar merchant dashboard. The key must include the `payments:write` ability (and `payments:refund` if you plan to issue refunds from WooCommerce).
+   * **Test Mode:** Leave off for real payments. Turn on to test the full order flow without real money — same Test Mode already available in your Fastaar merchant panel.
+   * **API Key:** Enter the key matching the Test Mode setting above — a Test API Key (starts with `fk_test_`) if Test Mode is on, or a Live API Key (starts with `fk_live_`) if it's off. Get it from your Fastaar merchant dashboard. It must include the `payments:write` ability (and `payments:refund` if you plan to issue refunds from WooCommerce). Switching Test Mode means re-entering the matching key.
+   * **Order Status After Payment:** Choose which WooCommerce order status a Fastaar payment moves to once confirmed — Processing, Completed, On hold, or leave it as Default to let WooCommerce decide as usual.
    * **Webhook Secret:** Set the signing secret for webhook verification.
-5. In your Fastaar merchant dashboard, configure your Webhook URL to: `https://yourdomain.com/?wc-api=wc_gateway_fastaar`
+5. The settings page shows your store's **Webhook URL** — copy it and add it as a webhook endpoint in your Fastaar merchant dashboard. When picking which events to send, `payment.completed` is the only one this plugin acts on (it marks the order paid); subscribing to just that is enough, though subscribing to all events is harmless too. Paste the signing secret Fastaar gives you back into **Webhook Secret** above.
 
 == Frequently Asked Questions ==
 
 = Where can I get my Fastaar API credentials? =
 Log in to your Fastaar merchant portal, and navigate to settings to find your API key and Webhook secret.
 
-= What is the Webhook URL to register in my Fastaar dashboard? =
-Use the following format, replacing `yourdomain.com` with your website's URL:
-`https://yourdomain.com/?wc-api=wc_gateway_fastaar`
+= Where do I find the Webhook URL to register in my Fastaar dashboard? =
+It's shown directly on the **WooCommerce > Settings > Payments > Fastaar** page, just above the Webhook Secret field — copy it from there. It follows the format `https://yourdomain.com/?wc-api=fastaar`.
+
+= Which webhook events do I need to subscribe to? =
+Only `payment.completed` — that's the only event this plugin listens for, and it's what marks a WooCommerce order as paid. Any other event Fastaar sends (e.g. `payment.refunded`, `payment.failed`) is received and acknowledged but otherwise ignored.
+
+= What API key abilities does this plugin need? =
+`payments:write` is required to create payments at checkout. `payments:refund` is only needed if you plan to issue refunds from the WooCommerce order admin — without it, refund attempts fail with an "ability_denied" error.
 
 = Can I test payments before going live? =
-Yes, you can input a test API key (e.g., prefix `fk_test_`) and enable Sandbox Mode in settings to run tests.
+Yes — turn on Test Mode, then enter your Test API Key (starts with `fk_test_`) in the API Key field. Test payments never touch real money and auto-complete on the Fastaar checkout page. When you're ready to go live, turn Test Mode back off and swap in your Live API Key (starts with `fk_live_`).
+
+= What does the "Order Status After Payment" setting do? =
+By default WooCommerce decides the status after payment (usually Processing, or Completed for virtual/downloadable-only orders). If you'd rather every Fastaar payment always land on a specific status — e.g. always Completed, or always On hold for manual review — pick it here instead of Default.
 
 = I'm getting an "ability_denied" or "authentication_error" response =
 Your API key is missing a required ability, or has expired. Open the key in your Fastaar merchant dashboard
 under API Keys and confirm it has `payments:write` (and `payments:refund` for refunds) and no expiry date in the past.
+
+= I enabled Fastaar but it doesn't show up at checkout =
+Make sure you clicked Save on WooCommerce > Settings > Payments after enabling it. If your checkout page uses the WooCommerce Cart & Checkout blocks, this plugin registers itself there too — if it's still missing, deactivate and reactivate the plugin to make sure the block registration is picked up, and check for a plugin update.
 
 == Screenshots ==
 
@@ -55,6 +71,18 @@ under API Keys and confirm it has `payments:write` (and `payments:refund` for re
 2. Fastaar payment gateway selection during checkout.
 
 == Changelog ==
+
+= 1.2.0 =
+* Reworked Test Mode into an actual working toggle, matching the Test Mode in your Fastaar merchant panel: a Test Mode switch plus a single API Key field, validated against the matching `fk_test_`/`fk_live_` prefix for whichever mode is on. (The old "Sandbox Mode" checkbox was stored but never used anywhere — it's been replaced by this.)
+* Added an "Order Status After Payment" setting — choose Processing, Completed, On hold, or leave it as WooCommerce's default for orders paid via Fastaar.
+* Fixed orders getting stuck on "Pending payment" when the Fastaar webhook is delayed or can't reach the site (e.g. local development). The order-received page now double-checks the payment status directly as a fallback, in addition to the webhook.
+* Added the Fastaar logo next to the gateway title at checkout, on both the classic and block-based checkout.
+* Fixed settings validation — enabling the gateway without an API Key for the active mode, or entering one that doesn't start with the right prefix (`fk_live_`/`fk_test_`), is now rejected on save with a clear admin notice instead of silently saving. A missing Webhook Secret is still saved (it's optional), but now shows a warning since webhook signature verification won't work without one.
+* Verified compatibility with WordPress 7.0 and WooCommerce 10.9.
+* Added WooCommerce Cart & Checkout blocks support — Fastaar now appears at checkout on stores using the block-based checkout, not just the classic shortcode checkout.
+* Added partial refund support — WooCommerce's own refund amount (full order, a partial amount, or individual line items) is now passed through to Fastaar instead of always refunding in full. Refunding less than the full amount marks the Fastaar payment as partially refunded, and it can be refunded again later for the rest.
+* The settings page now displays your store's Webhook URL directly, so you no longer have to construct it by hand to register it in the Fastaar dashboard.
+* The API Key and Webhook URL settings now explain exactly which abilities (`payments:write`, `payments:refund`) and webhook event (`payment.completed`) the plugin needs, so you don't have to guess or check the docs separately.
 
 = 1.1.0 =
 * Added refund support — issue refunds from the WooCommerce order admin via `POST /api/v1/payments/{id}/refund`.
@@ -64,6 +92,9 @@ under API Keys and confirm it has `payments:write` (and `payments:refund` for re
 * Initial release of the Fastaar Payment Gateway for WooCommerce.
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+* Adds a working Test Mode, an Order Status After Payment setting, WooCommerce Cart & Checkout blocks support, the Fastaar logo at checkout, and fixes orders getting stuck on "Pending payment". Upgrade recommended.
 
 = 1.1.0 =
 * Adds refund support and updates error handling for the new API response format. Upgrade recommended.
