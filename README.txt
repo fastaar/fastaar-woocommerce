@@ -7,7 +7,7 @@ Tested up to: 7.0
 Requires PHP: 8.1
 WC requires at least: 7.0
 WC tested up to: 10.9
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -67,10 +67,18 @@ Make sure you clicked Save on WooCommerce > Settings > Payments after enabling i
 
 == Screenshots ==
 
-1. Fastaar settings page in WooCommerce settings.
-2. Fastaar payment gateway selection during checkout.
+1. Fastaar payment gateway selection during checkout.
+2. Fastaar listed among WooCommerce's Payment providers.
+3. Fastaar settings page — API Key, Test Mode, and Order Status After Payment.
+4. Fastaar settings page continued — Webhook URL, Webhook Secret, and Debug Log.
 
 == Changelog ==
+
+= 1.2.1 =
+* Renamed the plugin folder from `fastaar-woocommerce` to `fastaar-pay` to match the plugin's text domain and WordPress.org slug.
+* Simplified the API Key setting to a single field (used as either the Live or Test key depending on the Test Mode toggle) instead of separate Live/Test API Key fields.
+* Added a directory listing icon and banner, and corrected the Screenshots section to describe all four current screenshots.
+* Added `amdad121` as a contributor.
 
 = 1.2.0 =
 * Reworked Test Mode into an actual working toggle, matching the Test Mode in your Fastaar merchant panel: a Test Mode switch plus a single API Key field, validated against the matching `fk_test_`/`fk_live_` prefix for whichever mode is on. (The old "Sandbox Mode" checkbox was stored but never used anywhere — it's been replaced by this.)
@@ -92,6 +100,9 @@ Make sure you clicked Save on WooCommerce > Settings > Payments after enabling i
 * Initial release of the Fastaar Payment Gateway for WooCommerce.
 
 == Upgrade Notice ==
+
+= 1.2.1 =
+* Renames the plugin folder to `fastaar-pay` and simplifies the API Key setting to one field. If you installed via a zip, re-upload; if updating in place, verify the Fastaar gateway is still enabled under WooCommerce > Settings > Payments afterward.
 
 = 1.2.0 =
 * Adds a working Test Mode, an Order Status After Payment setting, WooCommerce Cart & Checkout blocks support, the Fastaar logo at checkout, and fixes orders getting stuck on "Pending payment". Upgrade recommended.
