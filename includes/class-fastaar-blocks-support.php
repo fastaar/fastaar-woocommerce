@@ -16,7 +16,7 @@ use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodTyp
 final class Fastaar_Blocks_Support extends AbstractPaymentMethodType {
 
     /**
-     * Payment method name/id — must match WC_Gateway_Fastaar::$id.
+     * Payment method name/id — must match Fastaar_WC_Gateway::$id.
      *
      * @var string
      */
@@ -25,7 +25,7 @@ final class Fastaar_Blocks_Support extends AbstractPaymentMethodType {
     /**
      * The underlying gateway instance.
      *
-     * @var WC_Gateway_Fastaar|null
+     * @var Fastaar_WC_Gateway|null
      */
     private $gateway;
 

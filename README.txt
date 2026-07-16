@@ -7,7 +7,7 @@ Tested up to: 7.0
 Requires PHP: 8.1
 WC requires at least: 7.0
 WC tested up to: 10.9
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -87,6 +87,9 @@ Fastaar service: [Terms of Service](https://fastaar.com/terms), [Privacy Policy]
 
 == Changelog ==
 
+= 1.2.4 =
+* Renamed the gateway class from `WC_Gateway_Fastaar` to `Fastaar_WC_Gateway` (and its file to match) so it carries the plugin's own prefix, per WordPress.org's naming-collision guidelines.
+
 = 1.2.3 =
 * Documented the plugin's use of the Fastaar API as an external service, per WordPress.org guidelines.
 * Sanitized webhook input (event name, order ID, payment ID, and the logged request body) before use.
@@ -120,6 +123,9 @@ Fastaar service: [Terms of Service](https://fastaar.com/terms), [Privacy Policy]
 * Initial release of the Fastaar Payment Gateway for WooCommerce.
 
 == Upgrade Notice ==
+
+= 1.2.4 =
+* Internal class/file rename for WordPress.org naming-collision compliance. No functional changes.
 
 = 1.2.3 =
 * Security and guideline compliance fixes: sanitizes webhook input, documents the Fastaar external service, and trims dev-only assets from the release package. No functional changes for merchants.

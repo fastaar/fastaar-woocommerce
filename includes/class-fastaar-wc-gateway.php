@@ -8,11 +8,11 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Class WC_Gateway_Fastaar
+ * Class Fastaar_WC_Gateway
  *
  * Extends WC_Payment_Gateway to integrate Fastaar.
  */
-class WC_Gateway_Fastaar extends WC_Payment_Gateway {
+class Fastaar_WC_Gateway extends WC_Payment_Gateway {
 
     /**
      * Logger instance.
