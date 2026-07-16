@@ -1,4 +1,4 @@
-=== Fastaar Payment Gateway for WooCommerce ===
+=== Fastaar Pay ===
 Contributors: fastaar, amdad121
 Donate link: https://fastaar.com
 Tags: fastaar, payment gateway, bkash, nagad, bangladesh
@@ -7,7 +7,7 @@ Tested up to: 7.0
 Requires PHP: 8.1
 WC requires at least: 7.0
 WC tested up to: 10.9
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -15,7 +15,7 @@ Accept mobile banking payments in Bangladesh (bKash, Nagad, Rocket, Upay) on you
 
 == Description ==
 
-Fastaar Payment Gateway for WooCommerce allows you to easily accept bKash, Nagad, Rocket, and Upay payments on your WooCommerce store. This plugin is built with modern performance and security standards in mind, utilizing native WordPress APIs to achieve fast response times and safe cryptographic signature verification on incoming webhooks.
+Fastaar Pay allows you to easily accept bKash, Nagad, Rocket, and Upay payments on your WooCommerce store. This plugin is built with modern performance and security standards in mind, utilizing native WordPress APIs to achieve fast response times and safe cryptographic signature verification on incoming webhooks.
 
 ### Key Features
 * **Seamless Checkout:** Redirect customers to the secure Fastaar checkout page to pay via bKash, Nagad, Rocket, or Upay.
@@ -65,6 +65,19 @@ under API Keys and confirm it has `payments:write` (and `payments:refund` for re
 = I enabled Fastaar but it doesn't show up at checkout =
 Make sure you clicked Save on WooCommerce > Settings > Payments after enabling it. If your checkout page uses the WooCommerce Cart & Checkout blocks, this plugin registers itself there too — if it's still missing, deactivate and reactivate the plugin to make sure the block registration is picked up, and check for a plugin update.
 
+== External services ==
+
+This plugin connects to the Fastaar payment platform (fastaar.com) to process bKash, Nagad, Rocket, and Upay payments — this connection is required for the plugin to function, since Fastaar is the payment processor.
+
+* **Creating a payment (at checkout):** When a customer places an order using Fastaar, the order total, currency, order ID, order key, and the return/cancel URLs are sent to `https://fastaar.com/api/v1/payments` so Fastaar can create a hosted checkout session. The customer's browser is then redirected to Fastaar's checkout page to complete payment.
+* **Refunds (from the WooCommerce order admin):** If you issue a refund, the Fastaar payment ID and the refund amount are sent to Fastaar's refund endpoint.
+* **Checking payment status:** On the order-received (thank-you) page, the plugin may query Fastaar for the current status of a payment, in case the confirmation webhook hasn't arrived yet.
+* **Incoming webhooks:** Fastaar sends payment status updates (e.g. `payment.completed`) back to this site's webhook URL so the corresponding WooCommerce order can be marked paid.
+
+No data is sent to Fastaar unless a customer actually places an order using this gateway, or a store admin performs the actions above.
+
+Fastaar service: [Terms of Service](https://fastaar.com/terms), [Privacy Policy](https://fastaar.com/privacy).
+
 == Screenshots ==
 
 1. Fastaar payment gateway selection during checkout.
@@ -73,6 +86,10 @@ Make sure you clicked Save on WooCommerce > Settings > Payments after enabling i
 4. Fastaar settings page continued — Webhook URL, Webhook Secret, and Debug Log.
 
 == Changelog ==
+
+= 1.2.3 =
+* Documented the plugin's use of the Fastaar API as an external service, per WordPress.org guidelines.
+* Sanitized webhook input (event name, order ID, payment ID, and the logged request body) before use.
 
 = 1.2.2 =
 * Fixed the Plugin URI and Author URI being identical in the plugin header (a WordPress.org plugin check requirement) — Plugin URI now points to the plugin's GitHub repository, Author URI to fastaar.com.
@@ -103,6 +120,9 @@ Make sure you clicked Save on WooCommerce > Settings > Payments after enabling i
 * Initial release of the Fastaar Payment Gateway for WooCommerce.
 
 == Upgrade Notice ==
+
+= 1.2.3 =
+* Security and guideline compliance fixes: sanitizes webhook input, documents the Fastaar external service, and trims dev-only assets from the release package. No functional changes for merchants.
 
 = 1.2.2 =
 * Fixes a plugin header validation error (duplicate Plugin/Author URI). No functional changes.

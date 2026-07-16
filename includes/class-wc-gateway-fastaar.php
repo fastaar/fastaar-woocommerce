@@ -1,6 +1,6 @@
 <?php
 /**
- * Fastaar Payment Gateway for WooCommerce
+ * Fastaar Pay for WooCommerce
  *
  * @package Fastaar_Pay
  */
@@ -423,10 +423,12 @@ class WC_Gateway_Fastaar extends WC_Payment_Gateway {
             }
         }
 
+        // Not sanitized: the raw, untouched request body is required as-is for HMAC signature
+        // verification below. A sanitized copy is logged instead of this variable.
         $raw_body = file_get_contents( 'php://input' );
 
         $this->log( 'Webhook Signature: ' . $signature );
-        $this->log( 'Webhook Raw Body: ' . $raw_body );
+        $this->log( 'Webhook Raw Body: ' . sanitize_textarea_field( $raw_body ) );
 
         if ( empty( $signature ) ) {
             $this->log( 'Webhook verification failed: Signature header is missing.', 'error' );
@@ -450,14 +452,14 @@ class WC_Gateway_Fastaar extends WC_Payment_Gateway {
             wp_send_json_error( 'Invalid JSON body', 400 );
         }
 
-        $event = isset( $payload['event'] ) ? $payload['event'] : '';
-        $data  = isset( $payload['data'] ) ? $payload['data'] : array();
+        $event = isset( $payload['event'] ) ? sanitize_text_field( $payload['event'] ) : '';
+        $data  = isset( $payload['data'] ) && is_array( $payload['data'] ) ? $payload['data'] : array();
 
         $this->log( 'Webhook event: ' . $event );
 
         if ( 'payment.completed' === $event ) {
-            $order_id   = isset( $data['invoice_number'] ) ? $data['invoice_number'] : '';
-            $payment_id = isset( $data['id'] ) ? $data['id'] : '';
+            $order_id   = isset( $data['invoice_number'] ) ? absint( $data['invoice_number'] ) : 0;
+            $payment_id = isset( $data['id'] ) ? sanitize_text_field( $data['id'] ) : '';
 
             $this->log( 'Processing payment.completed event. Order ID: ' . $order_id . ', Payment ID: ' . $payment_id );
 
