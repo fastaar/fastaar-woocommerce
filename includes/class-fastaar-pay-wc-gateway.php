@@ -8,11 +8,11 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Class Fastaar_WC_Gateway
+ * Class Fastaar_Pay_WC_Gateway
  *
  * Extends WC_Payment_Gateway to integrate Fastaar.
  */
-class Fastaar_WC_Gateway extends WC_Payment_Gateway {
+class Fastaar_Pay_WC_Gateway extends WC_Payment_Gateway {
 
     /**
      * Logger instance.
@@ -58,7 +58,7 @@ class Fastaar_WC_Gateway extends WC_Payment_Gateway {
         $this->method_title       = __( 'Fastaar', 'fastaar-pay' );
         $this->method_description = __( 'Accept bKash, Nagad, Rocket, and Upay payments via Fastaar.', 'fastaar-pay' );
         $this->supports           = array( 'products', 'refunds' );
-        $this->icon               = apply_filters( 'woocommerce_fastaar_icon', $this->get_logo_url() );
+        $this->icon               = apply_filters( 'fastaar_pay_icon', $this->get_logo_url() );
 
         // Load settings
         $this->init_form_fields();
@@ -80,8 +80,7 @@ class Fastaar_WC_Gateway extends WC_Payment_Gateway {
         // Actions
         add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 
-        // Webhook registration hooks
-        add_action( 'woocommerce_api_wc_gateway_fastaar', array( $this, 'handle_webhook' ) );
+        // Webhook registration hook — matches the ?wc-api=fastaar query param used by get_webhook_url().
         add_action( 'woocommerce_api_fastaar', array( $this, 'handle_webhook' ) );
 
         // Fallback: if the customer lands back on the thank-you page before the webhook
@@ -309,7 +308,7 @@ class Fastaar_WC_Gateway extends WC_Payment_Gateway {
             return array( 'result' => 'fail' );
         }
 
-        $client = new Fastaar_API_Client( $this->api_key );
+        $client = new Fastaar_Pay_API_Client( $this->api_key );
 
         $params = array(
             'amount'      => $order->get_total(),
@@ -383,7 +382,7 @@ class Fastaar_WC_Gateway extends WC_Payment_Gateway {
         }
 
         try {
-            $client  = new Fastaar_API_Client( $this->api_key );
+            $client  = new Fastaar_Pay_API_Client( $this->api_key );
             $payment = $client->get_payment( $payment_id );
 
             $this->log( 'Checked payment status on return for Order ID: ' . $order_id . ', Payment ID: ' . $payment_id . ', status: ' . ( $payment['status'] ?? 'unknown' ) );
@@ -440,7 +439,7 @@ class Fastaar_WC_Gateway extends WC_Payment_Gateway {
             wp_send_json_error( 'Webhook secret not configured', 500 );
         }
 
-        if ( ! Fastaar_Webhook_Validator::verify( $this->webhook_secret, $raw_body, $signature ) ) {
+        if ( ! Fastaar_Pay_Webhook_Validator::verify( $this->webhook_secret, $raw_body, $signature ) ) {
             $this->log( 'Webhook verification failed: Signature mismatch or timeout.', 'error' );
             wp_send_json_error( 'Invalid webhook signature', 400 );
         }
@@ -540,7 +539,7 @@ class Fastaar_WC_Gateway extends WC_Payment_Gateway {
             return new WP_Error( 'fastaar_refund_error', __( 'Fastaar payment ID not found for this order.', 'fastaar-pay' ) );
         }
 
-        $client = new Fastaar_API_Client( $this->api_key );
+        $client = new Fastaar_Pay_API_Client( $this->api_key );
 
         try {
             $payment = $client->refund_payment( $payment_id, $amount );

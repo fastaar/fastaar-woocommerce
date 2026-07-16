@@ -3,7 +3,7 @@
  * Plugin Name: Fastaar Pay
  * Plugin URI: https://github.com/fastaar/fastaar-woocommerce
  * Description: Accept bKash, Nagad, Rocket, and Upay payments on your WooCommerce store using Fastaar.
- * Version: 1.2.4
+ * Version: 1.2.5
  * Author: Fastaar
  * Author URI: https://fastaar.com
  * License: MIT
@@ -12,6 +12,7 @@
  * Requires PHP: 8.1
  * Requires at least: 6.0
  * Tested up to: 7.0
+ * Requires Plugins: woocommerce
  * WC requires at least: 7.0
  * WC tested up to: 10.9
  */
@@ -19,26 +20,26 @@
 defined( 'ABSPATH' ) || exit;
 
 define( 'FASTAAR_PAY_PLUGIN_FILE', __FILE__ );
-define( 'FASTAAR_PAY_VERSION', '1.2.4' );
+define( 'FASTAAR_PAY_VERSION', '1.2.5' );
 
 /**
  * Initialize Fastaar WooCommerce Payment Gateway.
  */
-function woocommerce_fastaar_init() {
+function fastaar_pay_init() {
     if ( ! class_exists( 'WooCommerce' ) ) {
-        add_action( 'admin_notices', 'woocommerce_fastaar_missing_wc_notice' );
+        add_action( 'admin_notices', 'fastaar_pay_missing_wc_notice' );
         return;
     }
 
     // Require our includes
-    require_once plugin_dir_path( __FILE__ ) . 'includes/class-fastaar-webhook-validator.php';
-    require_once plugin_dir_path( __FILE__ ) . 'includes/class-fastaar-api-client.php';
-    require_once plugin_dir_path( __FILE__ ) . 'includes/class-fastaar-wc-gateway.php';
+    require_once plugin_dir_path( __FILE__ ) . 'includes/class-fastaar-pay-webhook-validator.php';
+    require_once plugin_dir_path( __FILE__ ) . 'includes/class-fastaar-pay-api-client.php';
+    require_once plugin_dir_path( __FILE__ ) . 'includes/class-fastaar-pay-wc-gateway.php';
 
     // Register the gateway class
-    add_filter( 'woocommerce_payment_gateways', 'woocommerce_fastaar_add_gateway' );
+    add_filter( 'woocommerce_payment_gateways', 'fastaar_pay_add_gateway' );
 }
-add_action( 'plugins_loaded', 'woocommerce_fastaar_init' );
+add_action( 'plugins_loaded', 'fastaar_pay_init' );
 
 /**
  * Add Fastaar Gateway to the list of available WooCommerce gateways.
@@ -46,15 +47,16 @@ add_action( 'plugins_loaded', 'woocommerce_fastaar_init' );
  * @param array $gateways
  * @return array
  */
-function woocommerce_fastaar_add_gateway( $gateways ) {
-    $gateways[] = 'Fastaar_WC_Gateway';
+function fastaar_pay_add_gateway( $gateways ) {
+    $gateways[] = 'Fastaar_Pay_WC_Gateway';
     return $gateways;
 }
 
 /**
  * Declare compatibility with WooCommerce features this plugin already supports.
  * Cart & Checkout blocks compatibility is what actually enables the gateway to
- * register itself on the block-based checkout (see woocommerce_fastaar_register_blocks_support()).
+ * register itself on the block-based checkout (see the
+ * woocommerce_blocks_payment_method_type_registration action below).
  */
 add_action(
     'before_woocommerce_init',
@@ -78,16 +80,16 @@ add_action(
             return;
         }
 
-        require_once plugin_dir_path( __FILE__ ) . 'includes/class-fastaar-blocks-support.php';
+        require_once plugin_dir_path( __FILE__ ) . 'includes/class-fastaar-pay-blocks-support.php';
 
-        $payment_method_registry->register( new Fastaar_Blocks_Support() );
+        $payment_method_registry->register( new Fastaar_Pay_Blocks_Support() );
     }
 );
 
 /**
  * Display admin notice if WooCommerce is missing.
  */
-function woocommerce_fastaar_missing_wc_notice() {
+function fastaar_pay_missing_wc_notice() {
     ?>
     <div class="error notice">
         <p><?php esc_html_e( 'Fastaar Payment Gateway requires WooCommerce to be installed and active.', 'fastaar-pay' ); ?></p>
@@ -101,9 +103,9 @@ function woocommerce_fastaar_missing_wc_notice() {
  * @param array $links
  * @return array
  */
-function woocommerce_fastaar_action_links( $links ) {
+function fastaar_pay_action_links( $links ) {
     $settings_link = '<a href="' . esc_url( admin_url( 'admin.php?page=wc-settings&tab=checkout&section=fastaar' ) ) . '">' . esc_html__( 'Settings', 'fastaar-pay' ) . '</a>';
     array_unshift( $links, $settings_link );
     return $links;
 }
-add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'woocommerce_fastaar_action_links' );
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'fastaar_pay_action_links' );

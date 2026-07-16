@@ -7,7 +7,7 @@ Tested up to: 7.0
 Requires PHP: 8.1
 WC requires at least: 7.0
 WC tested up to: 10.9
-Stable tag: 1.2.4
+Stable tag: 1.2.5
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -87,6 +87,12 @@ Fastaar service: [Terms of Service](https://fastaar.com/terms), [Privacy Policy]
 
 == Changelog ==
 
+= 1.2.5 =
+* Added `uninstall.php` to remove the plugin's settings when it's deleted through the WordPress admin.
+* Added a `Requires Plugins: woocommerce` header so WordPress can prompt to install WooCommerce first, if it's missing.
+* Renamed the remaining global functions (`fastaar_pay_init`, `fastaar_pay_add_gateway`, etc.) and a custom filter hook to use the plugin's own prefix instead of `woocommerce_`, and renamed all class files/classes to the `Fastaar_Pay_*` / `class-fastaar-pay-*.php` convention, addressing further naming-collision guidelines from the WordPress.org Plugin Check.
+* Removed a dead legacy webhook hook that never fired.
+
 = 1.2.4 =
 * Renamed the gateway class from `WC_Gateway_Fastaar` to `Fastaar_WC_Gateway` (and its file to match) so it carries the plugin's own prefix, per WordPress.org's naming-collision guidelines.
 
@@ -123,6 +129,9 @@ Fastaar service: [Terms of Service](https://fastaar.com/terms), [Privacy Policy]
 * Initial release of the Fastaar Payment Gateway for WooCommerce.
 
 == Upgrade Notice ==
+
+= 1.2.5 =
+* Adds settings cleanup on uninstall and a WooCommerce dependency check. No functional changes for existing installs.
 
 = 1.2.4 =
 * Internal class/file rename for WordPress.org naming-collision compliance. No functional changes.

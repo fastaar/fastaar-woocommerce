@@ -8,11 +8,11 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Class Fastaar_Webhook_Validator
+ * Class Fastaar_Pay_Webhook_Validator
  *
  * Verifies that the webhook request is genuinely sent by Fastaar.
  */
-class Fastaar_Webhook_Validator {
+class Fastaar_Pay_Webhook_Validator {
 
     /**
      * Verify the X-Fastaar-Signature header (`t=<ts>,v1=<hmac>`) against

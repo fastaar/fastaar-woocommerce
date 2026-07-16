@@ -13,10 +13,10 @@ use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodTyp
  * Registers the Fastaar gateway with the block-based Cart & Checkout, so it appears
  * there just like it already does on the classic shortcode checkout.
  */
-final class Fastaar_Blocks_Support extends AbstractPaymentMethodType {
+final class Fastaar_Pay_Blocks_Support extends AbstractPaymentMethodType {
 
     /**
-     * Payment method name/id — must match Fastaar_WC_Gateway::$id.
+     * Payment method name/id — must match Fastaar_Pay_WC_Gateway::$id.
      *
      * @var string
      */
@@ -25,7 +25,7 @@ final class Fastaar_Blocks_Support extends AbstractPaymentMethodType {
     /**
      * The underlying gateway instance.
      *
-     * @var Fastaar_WC_Gateway|null
+     * @var Fastaar_Pay_WC_Gateway|null
      */
     private $gateway;
 

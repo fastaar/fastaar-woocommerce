@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Exception class for Fastaar API errors.
  */
-class Fastaar_API_Exception extends Exception {
+class Fastaar_Pay_API_Exception extends Exception {
 
     /**
      * The stable API error code.
@@ -42,11 +42,11 @@ class Fastaar_API_Exception extends Exception {
 }
 
 /**
- * Class Fastaar_API_Client
+ * Class Fastaar_Pay_API_Client
  *
  * Client to communicate with the Fastaar API using WordPress APIs.
  */
-class Fastaar_API_Client {
+class Fastaar_Pay_API_Client {
 
     const BASE_URL = 'https://fastaar.com';
 
@@ -80,7 +80,7 @@ class Fastaar_API_Client {
      *
      * @param array $params Request parameters.
      * @return array
-     * @throws Fastaar_API_Exception
+     * @throws Fastaar_Pay_API_Exception
      */
     public function create_payment( array $params ) {
         return $this->request( 'POST', '/api/v1/payments', $params );
@@ -91,7 +91,7 @@ class Fastaar_API_Client {
      *
      * @param string $payment_id Payment ID.
      * @return array
-     * @throws Fastaar_API_Exception
+     * @throws Fastaar_Pay_API_Exception
      */
     public function get_payment( $payment_id ) {
         return $this->request( 'GET', '/api/v1/payments/' . rawurlencode( $payment_id ) );
@@ -102,7 +102,7 @@ class Fastaar_API_Client {
      *
      * @param array $params Optional query parameters.
      * @return array
-     * @throws Fastaar_API_Exception
+     * @throws Fastaar_Pay_API_Exception
      */
     public function list_payments( array $params = [] ) {
         $query = empty( $params ) ? '' : '?' . http_build_query( $params );
@@ -118,7 +118,7 @@ class Fastaar_API_Client {
      * @param float|null $amount     Amount to refund, or null for the full remaining balance.
      * @return array The updated payment object. `status` is `refunded` once fully refunded,
      *               or `partially_refunded` if some balance remains.
-     * @throws Fastaar_API_Exception
+     * @throws Fastaar_Pay_API_Exception
      */
     public function refund_payment( $payment_id, $amount = null ) {
         $body = null !== $amount ? array( 'amount' => $amount ) : null;
@@ -131,7 +131,7 @@ class Fastaar_API_Client {
      *
      * @param string $payment_id Fastaar payment ID.
      * @return array List of refund objects.
-     * @throws Fastaar_API_Exception
+     * @throws Fastaar_Pay_API_Exception
      */
     public function list_refunds( $payment_id ) {
         return $this->request( 'GET', '/api/v1/payments/' . rawurlencode( $payment_id ) . '/refunds' );
@@ -144,7 +144,7 @@ class Fastaar_API_Client {
      * @param string     $path   Request path.
      * @param array|null $body   Request body.
      * @return array
-     * @throws Fastaar_API_Exception
+     * @throws Fastaar_Pay_API_Exception
      */
     private function request( $method, $path, $body = null ) {
         $url = self::BASE_URL . $path;
@@ -170,7 +170,7 @@ class Fastaar_API_Client {
         $response = wp_remote_request( $url, $args );
 
         if ( is_wp_error( $response ) ) {
-            throw new Fastaar_API_Exception(
+            throw new Fastaar_Pay_API_Exception(
                 esc_html(
                     sprintf(
                         /* translators: %s: error message */
@@ -193,7 +193,7 @@ class Fastaar_API_Client {
                 $status_code
             );
             $error_type = isset( $decoded['code'] ) ? $decoded['code'] : 'api_error';
-            throw new Fastaar_API_Exception( esc_html( $message ), esc_html( $error_type ), (int) esc_html( (string) $status_code ) );
+            throw new Fastaar_Pay_API_Exception( esc_html( $message ), esc_html( $error_type ), (int) esc_html( (string) $status_code ) );
         }
 
         return isset( $decoded['data'] ) ? $decoded['data'] : $decoded;
