@@ -1,0 +1,268 @@
+# Copyright (C) 2026 Fastaar
+# This file is distributed under the MIT license.
+msgid ""
+msgstr ""
+"Project-Id-Version: Fastaar Pay 1.2.7\n"
+"Report-Msgid-Bugs-To: https://github.com/fastaar/fastaar-woocommerce/issues\n"
+"POT-Creation-Date: 2026-07-17 21:58+0600\n"
+"PO-Revision-Date: 2026-07-17 22:10+0600\n"
+"Last-Translator: Fastaar <admin@fastaar.com>\n"
+"Language-Team: Bangla\n"
+"Language: bn_BD\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Domain: fastaar-pay\n"
+
+#: fastaar-pay.php:95
+msgid ""
+"Fastaar Payment Gateway requires WooCommerce to be installed and active."
+msgstr "Fastaar পেমেন্ট গেটওয়ে ব্যবহার করতে WooCommerce ইনস্টল ও সক্রিয় থাকতে হবে।"
+
+#: fastaar-pay.php:107
+msgid "Settings"
+msgstr "সেটিংস"
+
+#: includes/class-fastaar-pay-api-client.php:177
+#, php-format
+msgid "Could not reach the Fastaar API: %s"
+msgstr "Fastaar API-তে সংযোগ করা যায়নি: %s"
+
+#: includes/class-fastaar-pay-api-client.php:192
+#, php-format
+msgid "Fastaar API returned HTTP %d."
+msgstr "Fastaar API থেকে HTTP %d স্ট্যাটাস পাওয়া গেছে।"
+
+#: includes/class-fastaar-pay-blocks-support.php:79
+#: includes/class-fastaar-pay-wc-gateway.php:58
+msgid "Fastaar"
+msgstr "Fastaar"
+
+#: includes/class-fastaar-pay-wc-gateway.php:59
+msgid "Accept bKash, Nagad, Rocket, and Upay payments via Fastaar."
+msgstr "Fastaar-এর মাধ্যমে bKash, Nagad, Rocket ও Upay পেমেন্ট গ্রহণ করুন।"
+
+#: includes/class-fastaar-pay-wc-gateway.php:101
+msgid "Enable/Disable"
+msgstr "সক্রিয়/নিষ্ক্রিয়"
+
+#: includes/class-fastaar-pay-wc-gateway.php:103
+msgid "Enable Fastaar Payment Gateway"
+msgstr "Fastaar পেমেন্ট গেটওয়ে সক্রিয় করুন"
+
+#: includes/class-fastaar-pay-wc-gateway.php:107
+msgid "Title"
+msgstr "শিরোনাম"
+
+#: includes/class-fastaar-pay-wc-gateway.php:109
+msgid "This controls the title which the user sees during checkout."
+msgstr "চেকআউটের সময় ক্রেতা যে শিরোনাম দেখবেন তা এখান থেকে নিয়ন্ত্রণ করা হয়।"
+
+#: includes/class-fastaar-pay-wc-gateway.php:110
+msgid "bKash, Nagad, Rocket, Upay (Fastaar)"
+msgstr "bKash, Nagad, Rocket, Upay (Fastaar)"
+
+#: includes/class-fastaar-pay-wc-gateway.php:114
+msgid "Description"
+msgstr "বিবরণ"
+
+#: includes/class-fastaar-pay-wc-gateway.php:116
+msgid "This controls the description which the user sees during checkout."
+msgstr "চেকআউটের সময় ক্রেতা যে বিবরণ দেখবেন তা এখান থেকে নিয়ন্ত্রণ করা হয়।"
+
+#: includes/class-fastaar-pay-wc-gateway.php:117
+msgid "Pay securely via Fastaar payment gateway using mobile banking."
+msgstr "মোবাইল ব্যাংকিং ব্যবহার করে Fastaar পেমেন্ট গেটওয়ের মাধ্যমে নিরাপদে পেমেন্ট করুন।"
+
+#: includes/class-fastaar-pay-wc-gateway.php:120
+msgid "API Key"
+msgstr "API কী"
+
+#: includes/class-fastaar-pay-wc-gateway.php:122
+msgid ""
+"Your Fastaar merchant API Key — enter the one matching the Test Mode setting "
+"below (starts with <code>fk_test_</code> if Test Mode is on, or "
+"<code>fk_live_</code> if it's off). The key must have the "
+"<code>payments:write</code> ability to create payments, and "
+"<code>payments:refund</code> if you plan to issue refunds from WooCommerce — "
+"otherwise checkout or refunds fail with an \"ability_denied\" error."
+msgstr ""
+"আপনার Fastaar মার্চেন্ট API কী — নিচের Test Mode সেটিং অনুযায়ী সঠিকটি দিন "
+"(Test Mode চালু থাকলে <code>fk_test_</code> দিয়ে শুরু, বন্ধ থাকলে "
+"<code>fk_live_</code> দিয়ে শুরু হবে)। পেমেন্ট তৈরি করতে কী-টিতে "
+"<code>payments:write</code> সক্ষমতা থাকতে হবে, এবং WooCommerce থেকে রিফান্ড "
+"দিতে চাইলে <code>payments:refund</code> সক্ষমতাও প্রয়োজন — নয়তো চেকআউট বা "
+"রিফান্ড \"ability_denied\" ত্রুটি দিয়ে ব্যর্থ হবে।"
+
+#: includes/class-fastaar-pay-wc-gateway.php:126
+msgid "Test Mode"
+msgstr "টেস্ট মোড"
+
+#: includes/class-fastaar-pay-wc-gateway.php:128
+msgid "Enable Test Mode"
+msgstr "টেস্ট মোড সক্রিয় করুন"
+
+#: includes/class-fastaar-pay-wc-gateway.php:130
+msgid ""
+"While enabled, checkout uses the API Key above as a Test API Key and test "
+"payments never touch real money — the same Test Mode already available in "
+"your Fastaar merchant panel. Switch this off and use your Live API Key above "
+"to go live."
+msgstr ""
+"সক্রিয় থাকলে চেকআউট উপরের API কী-টিকে টেস্ট API কী হিসেবে ব্যবহার করবে এবং "
+"টেস্ট পেমেন্টে প্রকৃত টাকা লেনদেন হবে না — আপনার Fastaar মার্চেন্ট প্যানেলে "
+"থাকা একই টেস্ট মোড এটি। লাইভে যেতে এটি বন্ধ করে উপরে আপনার লাইভ API কী "
+"ব্যবহার করুন।"
+
+#: includes/class-fastaar-pay-wc-gateway.php:133
+msgid "Order Status After Payment"
+msgstr "পেমেন্টের পর অর্ডার স্ট্যাটাস"
+
+#: includes/class-fastaar-pay-wc-gateway.php:135
+msgid ""
+"The WooCommerce order status to set once Fastaar confirms a payment is "
+"complete."
+msgstr "Fastaar পেমেন্ট সম্পন্ন নিশ্চিত করার পর WooCommerce অর্ডার যে স্ট্যাটাসে যাবে।"
+
+#: includes/class-fastaar-pay-wc-gateway.php:139
+msgid "Default (let WooCommerce decide)"
+msgstr "ডিফল্ট (WooCommerce নিজে ঠিক করুক)"
+
+#: includes/class-fastaar-pay-wc-gateway.php:140
+msgid "Processing"
+msgstr "প্রসেসিং"
+
+#: includes/class-fastaar-pay-wc-gateway.php:141
+msgid "Completed"
+msgstr "সম্পন্ন"
+
+#: includes/class-fastaar-pay-wc-gateway.php:142
+msgid "On hold"
+msgstr "হোল্ডে রাখা হয়েছে"
+
+#: includes/class-fastaar-pay-wc-gateway.php:146
+msgid "Webhook URL"
+msgstr "ওয়েবহুক URL"
+
+#: includes/class-fastaar-pay-wc-gateway.php:150
+#, php-format
+msgid ""
+"Add this URL as a webhook endpoint in your Fastaar merchant dashboard, then "
+"paste the signing secret it gives you below: %1$s When choosing which events "
+"to send, this plugin only acts on %2$s (it marks the order paid) — other "
+"events are received but ignored, so subscribing to just that one is enough; "
+"subscribing to all events is harmless too."
+msgstr ""
+"আপনার Fastaar মার্চেন্ট ড্যাশবোর্ডে এই URL-টি একটি ওয়েবহুক এন্ডপয়েন্ট হিসেবে "
+"যোগ করুন, তারপর এটি যে সাইনিং সিক্রেট দেবে সেটি নিচে বসান: %1$s কোন ইভেন্ট "
+"পাঠাবেন তা নির্বাচনের সময়, এই প্লাগইন শুধু %2$s ইভেন্টেই কাজ করে (এটি অর্ডার "
+"পেইড হিসেবে চিহ্নিত করে) — অন্য ইভেন্টগুলো গ্রহণ করা হলেও উপেক্ষা করা হয়, তাই "
+"শুধু এটিতে সাবস্ক্রাইব করাই যথেষ্ট; সবগুলোতে সাবস্ক্রাইব করাও ক্ষতিকর নয়।"
+
+#: includes/class-fastaar-pay-wc-gateway.php:156
+msgid "Webhook Secret"
+msgstr "ওয়েবহুক সিক্রেট"
+
+#: includes/class-fastaar-pay-wc-gateway.php:158
+msgid ""
+"Enter your Webhook signing secret. Used to verify the integrity of webhook "
+"notifications from Fastaar."
+msgstr ""
+"আপনার ওয়েবহুক সাইনিং সিক্রেট দিন। Fastaar থেকে আসা ওয়েবহুক নোটিফিকেশনের "
+"সঠিকতা যাচাই করতে এটি ব্যবহৃত হয়।"
+
+#: includes/class-fastaar-pay-wc-gateway.php:162
+msgid "Debug Log"
+msgstr "ডিবাগ লগ"
+
+#: includes/class-fastaar-pay-wc-gateway.php:164
+msgid "Enable logging"
+msgstr "লগিং সক্রিয় করুন"
+
+#: includes/class-fastaar-pay-wc-gateway.php:168
+#, php-format
+msgid "Log API and webhook events. Log file: %s"
+msgstr "API ও ওয়েবহুক ইভেন্ট লগ করুন। লগ ফাইল: %s"
+
+#: includes/class-fastaar-pay-wc-gateway.php:215
+#, php-format
+msgid ""
+"%s API Key is required to enable the gateway in this mode. Settings were not "
+"saved."
+msgstr ""
+"এই মোডে গেটওয়ে সক্রিয় করতে %s API কী আবশ্যক। সেটিংস সংরক্ষণ করা হয়নি।"
+
+#: includes/class-fastaar-pay-wc-gateway.php:216
+msgid "Test"
+msgstr "টেস্ট"
+
+#: includes/class-fastaar-pay-wc-gateway.php:216
+msgid "Live"
+msgstr "লাইভ"
+
+#: includes/class-fastaar-pay-wc-gateway.php:229
+#, php-format
+msgid ""
+"That doesn't look like a valid Fastaar API Key for this mode — it should "
+"start with %s. Settings were not saved."
+msgstr ""
+"এটি এই মোডের জন্য বৈধ Fastaar API কী মনে হচ্ছে না — এটি %s দিয়ে শুরু হওয়া "
+"উচিত। সেটিংস সংরক্ষণ করা হয়নি।"
+
+#: includes/class-fastaar-pay-wc-gateway.php:253
+msgid ""
+"No Webhook Secret is set — Fastaar webhooks will fail signature verification "
+"and orders won't be marked paid automatically until you add one."
+msgstr ""
+"কোনো ওয়েবহুক সিক্রেট সেট করা নেই — এটি যোগ না করা পর্যন্ত Fastaar ওয়েবহুকের "
+"সিগনেচার যাচাই ব্যর্থ হবে এবং অর্ডার স্বয়ংক্রিয়ভাবে পেইড হিসেবে চিহ্নিত হবে না।"
+
+#: includes/class-fastaar-pay-wc-gateway.php:304
+msgid ""
+"Fastaar payment gateway is not properly configured. Test API Key is missing."
+msgstr "Fastaar পেমেন্ট গেটওয়ে সঠিকভাবে কনফিগার করা নেই। টেস্ট API কী পাওয়া যায়নি।"
+
+#: includes/class-fastaar-pay-wc-gateway.php:305
+msgid ""
+"Fastaar payment gateway is not properly configured. Live API Key is missing."
+msgstr "Fastaar পেমেন্ট গেটওয়ে সঠিকভাবে কনফিগার করা নেই। লাইভ API কী পাওয়া যায়নি।"
+
+#: includes/class-fastaar-pay-wc-gateway.php:330
+msgid "Checkout URL not returned from Fastaar API."
+msgstr "Fastaar API থেকে চেকআউট URL পাওয়া যায়নি।"
+
+#: includes/class-fastaar-pay-wc-gateway.php:350
+#, php-format
+msgid "Fastaar Payment Error: %s"
+msgstr "Fastaar পেমেন্ট ত্রুটি: %s"
+
+#: includes/class-fastaar-pay-wc-gateway.php:395
+#, php-format
+msgid ""
+"Fastaar payment completed (confirmed on return, webhook had not yet "
+"arrived). Transaction ID: %s"
+msgstr ""
+"Fastaar পেমেন্ট সম্পন্ন হয়েছে (ফিরে আসার সময় নিশ্চিত হয়েছে, ওয়েবহুক তখনও "
+"আসেনি)। ট্রানজেকশন আইডি: %s"
+
+#: includes/class-fastaar-pay-wc-gateway.php:487
+#, php-format
+msgid "Fastaar payment completed. Transaction ID: %s"
+msgstr "Fastaar পেমেন্ট সম্পন্ন হয়েছে। ট্রানজেকশন আইডি: %s"
+
+#: includes/class-fastaar-pay-wc-gateway.php:539
+msgid "Fastaar payment ID not found for this order."
+msgstr "এই অর্ডারের জন্য কোনো Fastaar পেমেন্ট আইডি পাওয়া যায়নি।"
+
+#: includes/class-fastaar-pay-wc-gateway.php:550
+#, php-format
+msgid "Fastaar refund submitted. Payment ID: %1$s. Amount: %2$s. Reason: %3$s"
+msgstr "Fastaar রিফান্ড জমা দেওয়া হয়েছে। পেমেন্ট আইডি: %1$s। পরিমাণ: %2$s। কারণ: %3$s"
+
+#: includes/class-fastaar-pay-wc-gateway.php:552
+msgid "full remaining balance"
+msgstr "অবশিষ্ট সম্পূর্ণ পরিমাণ"
+
+#: includes/class-fastaar-pay-wc-gateway.php:553
+msgid "No reason provided"
+msgstr "কোনো কারণ উল্লেখ করা হয়নি"

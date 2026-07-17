@@ -114,7 +114,7 @@ class Fastaar_Pay_WC_Gateway extends WC_Payment_Gateway {
                 'title'       => __( 'Description', 'fastaar-pay' ),
                 'type'        => 'textarea',
                 'description' => __( 'This controls the description which the user sees during checkout.', 'fastaar-pay' ),
-                'default'     => __( 'Pay securely via Fastaar payment gateway using mobile banking or cards.', 'fastaar-pay' ),
+                'default'     => __( 'Pay securely via Fastaar payment gateway using mobile banking.', 'fastaar-pay' ),
             ),
             'api_key' => array(
                 'title'       => __( 'API Key', 'fastaar-pay' ),

@@ -7,7 +7,7 @@ Tested up to: 7.0
 Requires PHP: 8.1
 WC requires at least: 7.0
 WC tested up to: 10.9
-Stable tag: 1.2.6
+Stable tag: 1.2.7
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -87,6 +87,11 @@ Fastaar service: [Terms of Service](https://fastaar.com/terms), [Privacy Policy]
 
 == Changelog ==
 
+= 1.2.7 =
+* Added a Bangla (bn_BD) translation, bundled as a fallback for stores whose site language is set to Bangla.
+* Added a `.distignore` file so the WordPress.org SVN deploy explicitly excludes dev-only files, instead of relying on the deploy action's default behavior.
+* Removed "or cards" from the default gateway description, since Fastaar checkout is mobile banking only.
+
 = 1.2.6 =
 * Minor readme and CI workflow cleanup.
 
@@ -131,6 +136,9 @@ Fastaar service: [Terms of Service](https://fastaar.com/terms), [Privacy Policy]
 * Initial release of the Fastaar Payment Gateway for WooCommerce.
 
 == Upgrade Notice ==
+
+= 1.2.7 =
+* Adds a bundled Bangla translation and tightens the SVN deploy build. No functional changes for existing installs.
 
 = 1.2.6 =
 * Minor readme and CI workflow cleanup. No functional changes.
